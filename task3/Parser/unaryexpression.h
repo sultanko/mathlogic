@@ -11,9 +11,6 @@ public:
     UnaryExpression(const Expression* expr, const std::string& str);
 
     ~UnaryExpression();
-
-
-    virtual std::string toString() const;
 };
 
 #endif // UNARYEXPRESSION_H

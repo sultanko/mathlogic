@@ -34,10 +34,7 @@ public:
     void addExpression(const Expression *expr);
     std::pair<size_t, size_t> getModusPones(const Expression *expr);
     void addHeader(std::string str);
-    void writeProof(const Expression* now);
     void writeSelfProof();
-    void writeAxiomProof(const std::string& strNow);
-    void writeMpProof(Expression const *now);
 
 
     const std::string& getProposalString() const
@@ -46,13 +43,13 @@ public:
     }
 
 
-    Expression const *getProposal() const
+    const Expression *getProposal() const
     {
         return proposal;
     }
 
 
-    std::vector<Expression const *> const &getExpressions() const
+    const std::vector<const Expression *> &getExpressions() const
     {
         return expressions;
     }

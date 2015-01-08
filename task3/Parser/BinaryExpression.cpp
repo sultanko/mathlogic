@@ -14,9 +14,9 @@ BinaryExpression::BinaryExpression(const Expression *expr1, const Expression *ex
 std::string BinaryExpression::toString() const
 {
     return
-            "(" +
+//            "(" +
             left->toString() + stringExpr + right->toString()
-            + ")"
+//            + ")"
             ;
 }
 

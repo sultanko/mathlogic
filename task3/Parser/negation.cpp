@@ -1,4 +1,3 @@
-#include <iostream>
 #include "negation.h"
 
 std::size_t Negation::getHash() const
@@ -15,7 +14,7 @@ std::string Negation::toString() const
 bool Negation::isEqual(const Expression *expr) const
 {
     return typeid(*expr) == typeid(Negation)
-            && this->expr->isEqual((static_cast<const Negation*>(expr))->expr)
+            && expr->isEqual(static_cast<const Negation*>(expr)->expr)
             ;
 }
 

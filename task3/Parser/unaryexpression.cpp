@@ -10,9 +10,3 @@ UnaryExpression::~UnaryExpression()
 {
     delete expr;
 }
-
-std::string UnaryExpression::toString() const
-{
-    return "(" + expr->toString() + ")";
-}
-

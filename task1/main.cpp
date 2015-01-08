@@ -12,8 +12,8 @@ char strAxiom[1024];
 
 int main()
 {
-//    freopen(FILENAME"3.in", "r", stdin);
-    freopen("maxtest1.in", "r", stdin);
+    freopen(FILENAME".in", "r", stdin);
+//    freopen("maxtest1.in", "r", stdin);
     freopen(FILENAME".out", "w", stdout);
     size_t counter = 0;
     while (cin.getline(strAxiom, 1024))
