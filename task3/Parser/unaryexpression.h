@@ -6,11 +6,16 @@
 class UnaryExpression : public Expression
 {
 protected:
-    const Expression* expr;
+    std::shared_ptr<const Expression> expr;
 public:
-    UnaryExpression(const Expression* expr, const std::string& str);
+    UnaryExpression(const Expression* expr1, const std::string& str);
+    UnaryExpression(std::shared_ptr<const Expression> expr1, const std::string& str)
+    : Expression(str), expr(expr1)
+    {}
 
     ~UnaryExpression();
+
+    virtual std::string toString() const;
 };
 
 #endif // UNARYEXPRESSION_H

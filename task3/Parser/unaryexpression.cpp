@@ -1,12 +1,17 @@
 #include "unaryexpression.h"
 
-UnaryExpression::UnaryExpression(const Expression *expr, const std::string& str)
-    : Expression(str), expr(expr)
+UnaryExpression::UnaryExpression(const Expression *expr1, const std::string& str)
+    : Expression(str), expr(expr1)
 {
 
 }
 
 UnaryExpression::~UnaryExpression()
 {
-    delete expr;
 }
+
+std::string UnaryExpression::toString() const
+{
+    return "(" + expr->toString() + ")";
+}
+

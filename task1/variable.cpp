@@ -5,23 +5,25 @@
 Variable::Variable(std::string str)
     : Expression(str)
 {
+    hash = std::hash<std::string>()(stringExpr);
 }
 
 Variable::Variable(char param)
         : Expression(std::string(1, param))
 {
+    hash = std::hash<std::string>()(stringExpr);
 }
 
 bool Variable::isSubstitute(const Expression *expr) const
 {
     ExpressionUtils* utils = ExpressionUtils::getInstance();
-    if (utils->variables.find(stringExpr[0]) == utils->variables.end())
+    if (utils->variables.find(stringExpr) == utils->variables.end())
     {
-        utils->variables[stringExpr[0]] = expr->getHash();
+        utils->variables[stringExpr] = expr->getHash();
     }
     else
     {
-        if (utils->variables[stringExpr[0]] != expr->getHash())
+        if (utils->variables[stringExpr] != expr->getHash())
         {
             return false;
         }
@@ -31,7 +33,8 @@ bool Variable::isSubstitute(const Expression *expr) const
 
 bool Variable::isEqual(const Expression *expr) const
 {
-    return false;
+    return typeid(*expr) == typeid(Variable)
+            && stringExpr == static_cast<const Variable*>(expr)->stringExpr;
 }
 
 std::string Variable::toString() const
@@ -41,7 +44,6 @@ std::string Variable::toString() const
 
 std::size_t Variable::getHash() const
 {
-    std::hash<std::string> hash_fn;
-    return hash_fn(stringExpr);
+    return hash;
 }
 

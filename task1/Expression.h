@@ -12,6 +12,7 @@ class Expression
 {
 protected:
     std::string stringExpr;
+    size_t hash;
 public:
 
     Expression(const std::string &stringExpr) : stringExpr(stringExpr)

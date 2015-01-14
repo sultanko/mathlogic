@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="task3" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="edit_cache">
+         <Option working_dir="/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="rebuild_cache">
+         <Option working_dir="/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="task3">
+         <Option output="/home/sultan/Documents/Year2/mat_logic/task3/build/task3" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/sultan/Documents/Year2/mat_logic/task3/build" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/4.8" />
+            <Add directory="/usr/include/c++/4.8/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 task3" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="task3/fast">
+         <Option output="/home/sultan/Documents/Year2/mat_logic/task3/build/task3" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/sultan/Documents/Year2/mat_logic/task3/build" />
+         <Option object_output="./" />
+         <Option type="1" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/c++/4.8" />
+            <Add directory="/usr/include/c++/4.8/backward" />
+            <Add directory="/usr/include/x86_64-linux-gnu" />
+            <Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+            <Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+            <Add directory="/usr/local/include" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 task3/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/sultan/Documents/Year2/mat_logic/build-task1-Desktop-Default/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/BinaryExpression.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Expression.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Parser.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Proofment.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/conjunction.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/disjunction.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/implication.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/negation.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/unaryexpression.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/variable.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/main.cpp">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/BinaryExpression.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Expression.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Parser.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/Proofment.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/conjunction.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/disjunction.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/implication.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/negation.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/unaryexpression.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/Parser/variable.h">
+      </Unit>
+      <Unit filename="/home/sultan/Documents/Year2/mat_logic/task3/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>

@@ -93,14 +93,15 @@ void ExpressionUtils::addHeader(std::string str)
     {
         writeProof(assumption);
     }
+    writeProof(proposal);
 }
 
 ExpressionUtils::~ExpressionUtils()
 {
     safeDeleteVector(axioms);
     safeDeleteVector(expressions);
-    safeDeleteVector(assumptions);
-    delete proposal;
+    //safeDeleteVector(assumptions);
+    //delete proposal;
 }
 
 int ExpressionUtils::isAssumption(const Expression *expr)

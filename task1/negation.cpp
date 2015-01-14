@@ -2,8 +2,7 @@
 
 std::size_t Negation::getHash() const
 {
-    std::hash<std::string> hash_fn;
-    return hash_fn("!") + expr->getHash();
+    return hash;
 }
 
 std::string Negation::toString() const
@@ -13,7 +12,9 @@ std::string Negation::toString() const
 
 bool Negation::isEqual(const Expression *expr) const
 {
-    return false;
+    return typeid(*expr) == typeid(Negation)
+            && this->expr->isEqual((static_cast<const Negation*>(expr))->expr)
+            ;
 }
 
 bool Negation::isSubstitute(const Expression *expr) const

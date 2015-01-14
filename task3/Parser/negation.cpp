@@ -1,20 +1,16 @@
+#include <iostream>
 #include "negation.h"
-
-std::size_t Negation::getHash() const
-{
-    std::hash<std::string> hash_fn;
-    return hash_fn("!") + expr->getHash();
-}
+#include "Parser.h"
 
 std::string Negation::toString() const
 {
-    return "!" + expr->toString();
+    return "!" + expr->toString() + "";
 }
 
 bool Negation::isEqual(const Expression *expr) const
 {
     return typeid(*expr) == typeid(Negation)
-            && expr->isEqual(static_cast<const Negation*>(expr)->expr)
+            && this->expr->isEqual((static_cast<const Negation*>(expr))->expr.get())
             ;
 }
 
@@ -24,5 +20,59 @@ bool Negation::isSubstitute(const Expression *expr) const
     {
         return false;
     }
-    return this->expr->isSubstitute(static_cast<const Negation*>(expr)->expr);
+    return this->expr->isSubstitute(static_cast<const Negation*>(expr)->expr.get());
 }
+
+bool Negation::calculate(const std::map<std::string, bool> &variables) const
+{
+    return !expr->calculate(variables);
+}
+
+std::vector<std::string> Negation::getVariables() const
+{
+    return expr->getVariables();
+}
+
+std::shared_ptr<const Expression> Negation::substitute(std::map<std::string, std::shared_ptr<Expression const> > &comparasion) const
+{
+    return std::shared_ptr<Expression const>(new Negation(expr->substitute(comparasion)));
+}
+
+const std::string Negation::proofment0[] = {
+        "!A"
+};
+
+const std::string Negation::proofment1[] = {
+        "A",
+        "(!A->A)->(!A->!A)->!!A",
+        "A->!A->A",
+        "!A->A",
+        "(!A->!A)->!!A",
+        "!A->!A->!A",
+        "(!A->!A->!A)->(!A->(!A->!A)->!A)->(!A->!A)",
+        "(!A->(!A->!A)->!A)->(!A->!A)",
+        "!A->(!A->!A)->!A",
+        "!A->!A",
+        "!!A"
+};
+void Negation::proofThis(std::vector<std::shared_ptr<const Expression> > &vout, const std::map<std::string, bool> &varValues) const
+{
+    expr->proofThis(vout, varValues);
+    bool res = expr->calculate(varValues);
+    if (!res)
+    {
+        vout.emplace_back(new Negation(expr));
+        return;
+    }
+    const std::string* mas = proofment1;
+    const size_t proofSize = std::extent<decltype(proofment1)>::value;
+    std::map<std::string, std::shared_ptr<const Expression> > compMap;
+    compMap["A"] = expr;
+//    std::cerr << "Binary proof A:" << left->toString() << " B: " << right->toString() << "\n";
+    for (size_t i = 0; i < proofSize; i++)
+    {
+        std::shared_ptr<const Expression> now(Parser::parseString(mas[i]));
+        vout.emplace_back(now->substitute(compMap));
+    }
+}
+

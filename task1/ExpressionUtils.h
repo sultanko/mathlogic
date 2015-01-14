@@ -14,7 +14,7 @@ private:
     const std::string stringAxioms[axioms_size];
     std::vector<const Expression*> axioms;
     std::vector<const Expression*> expressions;
-    std::map<size_t, size_t> hash_expressions;
+    std::map<size_t, std::vector<size_t> > hash_expressions;
 
     ExpressionUtils();
 public:
@@ -24,7 +24,7 @@ public:
         return &utils;
     }
 
-    std::map<char, size_t> variables;
+    std::map<std::string, size_t> variables;
     int isAxiom(const Expression *expr);
     void addExpression(const Expression *expr);
     std::pair<size_t, size_t> getModusPones(const Expression *expr);

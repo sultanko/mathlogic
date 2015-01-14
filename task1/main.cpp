@@ -8,7 +8,7 @@ using namespace std;
 
 #define FILENAME "axiom"
 
-char strAxiom[1024];
+char strAxiom[5024];
 
 int main()
 {
@@ -16,7 +16,7 @@ int main()
 //    freopen("maxtest1.in", "r", stdin);
     freopen(FILENAME".out", "w", stdout);
     size_t counter = 0;
-    while (cin.getline(strAxiom, 1024))
+    while (cin.getline(strAxiom, 5024))
     {
         counter++;
         string str(strAxiom, strlen(strAxiom));
@@ -39,6 +39,7 @@ int main()
             else
             {
                 cout << " (" << "Не доказано" << ")" << "\n";
+                exit(-1);
             }
         }
     }

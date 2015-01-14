@@ -46,7 +46,7 @@ int ExpressionUtils::isAxiom(Expression const *expr)
 void ExpressionUtils::addExpression(const Expression *expr)
 {
     expressions.push_back(expr);
-    hash_expressions[expr->getHash()] = expressions.size() - 1;
+    hash_expressions[expr->getHash()].push_back(expressions.size() - 1);
 }
 
 std::pair<size_t, size_t> ExpressionUtils::getModusPones(const Expression *expr)
@@ -58,10 +58,24 @@ std::pair<size_t, size_t> ExpressionUtils::getModusPones(const Expression *expr)
         if (typeid(*approve) == typeid(Implication))
         {
             const Implication* implication = static_cast<const Implication*>(approve);
-            if (implication->right->getHash() == expr_hash
-                    && hash_expressions.find(implication->left->getHash()) != hash_expressions.end())
+            const size_t implHash = implication->left->getHash();
+            if (implication->right->getHash() == expr_hash && implication->right->isEqual(expr))
             {
-                return std::make_pair(i, hash_expressions[implication->left->getHash()]);
+                if (hash_expressions.find(implHash) != hash_expressions.end())
+                {
+                    if (hash_expressions[implHash].size() == 1)
+                    {
+                        return std::make_pair(i, hash_expressions[implHash][0]);
+                    }
+                    for (auto num : hash_expressions[implHash])
+                    {
+                        if (expressions[num]->isEqual(implication->left))
+                        {
+                            return std::make_pair(i, num);
+                        }
+
+                    }
+                }
             }
         }
     }

@@ -12,5 +12,8 @@ bool Disjunction::isSubstitute(const Expression *expr) const
 
 bool Disjunction::isEqual(const Expression *expr) const
 {
-    return false;
+    return typeid(*expr) == typeid(Disjunction)
+            && left->isEqual(static_cast<const Disjunction*>(expr)->left)
+            && right->isEqual(static_cast<const Disjunction*>(expr)->right)
+            ;
 }

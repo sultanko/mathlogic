@@ -12,13 +12,20 @@ public:
 
     Variable(char param);
 
-    std::size_t getHash() const;
-
     virtual bool isSubstitute(const Expression *expr) const;
 
     virtual bool isEqual(const Expression *expr) const;
 
     virtual std::string toString() const override;
+
+    virtual std::vector<std::string> getVariables() const override;
+
+
+    virtual std::shared_ptr<const Expression> substitute(std::map<std::string, std::shared_ptr<Expression const> > &comparasion) const override;
+
+    virtual bool calculate(const std::map<std::string, bool> &variables) const override;
+
+    virtual void proofThis(std::vector<std::shared_ptr<const Expression> > &vout, const std::map<std::string, bool> &varValues) const override;
 };
 
 #endif // VARIABLE_H

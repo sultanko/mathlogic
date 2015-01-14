@@ -15,5 +15,8 @@ bool Implication::isSubstitute(const Expression *expr) const
 
 bool Implication::isEqual(const Expression *expr) const
 {
-    return false;
+    return typeid(*expr) == typeid(Implication)
+            && left->isEqual(static_cast<const Implication*>(expr)->left)
+            && right->isEqual(static_cast<const Implication*>(expr)->right)
+            ;
 }
