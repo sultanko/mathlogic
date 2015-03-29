@@ -72,7 +72,7 @@ std::pair<size_t, size_t> ExpressionUtils::getModusPones(const Expression *expr)
 
 void ExpressionUtils::addHeader(std::string str)
 {
-    size_t breaker = str.find('|', 0);
+    size_t breaker = str.find("|-", 0);
     size_t breaker_old = breaker;
     str = ',' + str.substr(0, breaker);
     breaker_old++;

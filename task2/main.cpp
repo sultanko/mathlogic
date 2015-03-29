@@ -22,10 +22,10 @@ int main()
     {
         counter++;
         string str(strAxiom, strlen(strAxiom));
-//        cout << "OK " << "axiom" << "\n";
+//        cerr << "OK " << "axiom" << "\n";
         const Expression* now = ParserUtils::parseString(str);
         ExpressionUtils::getInstance()->writeProof(now);
-//        cout << "OK " << counter << "\n";
+//        cerr << "OK " << counter << "\n";
     }
     return 0;
 }

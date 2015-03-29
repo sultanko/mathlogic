@@ -7,7 +7,7 @@ using namespace std;
 
 void ProofDeduction::addHeader(std::string str)
 {
-    size_t breaker = str.find('|', 0);
+    size_t breaker = str.find("|-", 0);
     size_t breaker_old = breaker;
     str = ',' + str.substr(0, breaker);
     breaker_old++;
