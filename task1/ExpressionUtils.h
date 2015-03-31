@@ -6,6 +6,24 @@
 #include "Expression.h"
 #include <vector>
 #include <map>
+#include <unordered_map>
+#include <memory>
+
+struct ExpressionHash
+{
+    size_t operator()(const Expression* e) const
+    {
+        return e->getHash();
+    }
+};
+
+struct ExpressionEquals
+{
+    bool operator()(const Expression* e1, const Expression* e2) const
+    {
+        return e1->isEqual(e2);
+    }
+};
 
 class ExpressionUtils
 {
@@ -13,8 +31,8 @@ private:
     static const size_t axioms_size = 10;
     const std::string stringAxioms[axioms_size];
     std::vector<const Expression*> axioms;
-    std::vector<const Expression*> expressions;
-    std::map<size_t, std::vector<size_t> > hash_expressions;
+    std::vector<std::shared_ptr<const Expression>> expressions;
+    std::unordered_map<const Expression*, size_t, ExpressionHash, ExpressionEquals> mymap;
 
     ExpressionUtils();
 public:

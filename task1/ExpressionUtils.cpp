@@ -20,8 +20,6 @@ ExpressionUtils::ExpressionUtils()
     "(A->B)->(A->!B)->!A",
     "!!A->A"
 })
-    , expressions()
-    , hash_expressions()
 {
     for (size_t i = 0; i < axioms_size; i++)
     {
@@ -45,36 +43,23 @@ int ExpressionUtils::isAxiom(Expression const *expr)
 
 void ExpressionUtils::addExpression(const Expression *expr)
 {
-    expressions.push_back(expr);
-    hash_expressions[expr->getHash()].push_back(expressions.size() - 1);
+    expressions.emplace_back(expr);
+    mymap.insert(std::pair<const Expression*, size_t>(expr, expressions.size() - 1));
 }
 
 std::pair<size_t, size_t> ExpressionUtils::getModusPones(const Expression *expr)
 {
-    size_t expr_hash = expr->getHash();
     for (size_t i = 0; i < expressions.size(); i++)
     {
-        const Expression* approve = expressions[i];
+        const Expression* approve = expressions[i].get();
         if (typeid(*approve) == typeid(Implication))
         {
             const Implication* implication = static_cast<const Implication*>(approve);
-            const size_t implHash = implication->left->getHash();
-            if (implication->right->getHash() == expr_hash && implication->right->isEqual(expr))
+            if (implication->right->getHash() == expr->getHash() && implication->right->isEqual(expr))
             {
-                if (hash_expressions.find(implHash) != hash_expressions.end())
-                {
-                    if (hash_expressions[implHash].size() == 1)
-                    {
-                        return std::make_pair(i, hash_expressions[implHash][0]);
-                    }
-                    for (auto num : hash_expressions[implHash])
-                    {
-                        if (expressions[num]->isEqual(implication->left))
-                        {
-                            return std::make_pair(i, num);
-                        }
-
-                    }
+                auto mit = mymap.find(implication->left);
+                if (mit != mymap.end()) {
+                    return std::make_pair(i, mit->second);
                 }
             }
         }

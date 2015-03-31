@@ -12,8 +12,6 @@ public:
 public:
     BinaryExpression(const Expression* expr1, const Expression* expr2, const std::string& str);
 
-    std::size_t getHash() const;
-
     std::string toString() const;
 
     ~BinaryExpression();

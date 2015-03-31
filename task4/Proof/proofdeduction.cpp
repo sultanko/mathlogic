@@ -12,6 +12,11 @@ void ProofDeduction::addHeader(std::string str)
 {
     clearData();
     size_t breaker = str.find("|-", 0);
+    if (breaker == string::npos)
+    {
+        std::cerr << "Syntax error in proposal" << "\n";
+        exit(-1);
+    }
     size_t breaker_old = breaker;
     str = ',' + str.substr(0, breaker);
     breaker_old++;
@@ -49,7 +54,6 @@ void ProofDeduction::writeProof(std::shared_ptr<Expression const> now, std::vect
     {
         return;
     }
-    proofCheck.addExpression(now);
     int num_axiom = proofCheck.isAxiom(now.get());
     int num_arithm_axiom = proofCheck.isArithmAxiom(now.get());
     PredicatResult num_predicat_axiom = proofCheck.isPredicatAxiom(now.get());
@@ -80,6 +84,7 @@ void ProofDeduction::writeProof(std::shared_ptr<Expression const> now, std::vect
             writeRuleAllProof(now, vout);
         }
     }
+    proofCheck.addExpression(now);
     vout.emplace_back(new Implication(proposal, now));
 
 }
@@ -154,15 +159,15 @@ bool ProofDeduction::writeProof(const std::string &str, std::vector<std::shared_
     {
         if (aPredicat.error)
         {
-            std::cout << "Терм " + aPredicat.notFreeTerm->toString() +
-                    " не свободен для подстановки в " + aPredicat.formula->toString() << "\n";
+            errstr = "Терм " + aPredicat.notFreeTerm->toString() +
+                    " не свободен для подстановки в " + aPredicat.formula->toString() + "\n";
             return false;
         }
         if (std::find(proposalFreeVariables.begin(), proposalFreeVariables.end(), aPredicat.varName)
                 != proposalFreeVariables.end())
         {
-            std::cout << "Используется схема аксиом с квантором по переменной "
-                    + aPredicat.varName + " входящей свободно в допущение" + proposalStr << "\n";
+            errstr = "Используется схема аксиом с квантором по переменной "
+                    + aPredicat.varName + " входящей свободно в допущение" + proposalStr + "\n";
             return false;
         }
         writeProof(eptr, vout);
@@ -174,15 +179,15 @@ bool ProofDeduction::writeProof(const std::string &str, std::vector<std::shared_
         if (rPredicat.error)
         {
             // правило вывода, входит свободно в часть
-            std::cout << "Переменная "
-                    + rPredicat.varName + " входит свободно в формулу " + rPredicat.formula->toString() << "\n";
+            errstr = "Переменная "
+                    + rPredicat.varName + " входит свободно в формулу " + rPredicat.formula->toString() + "\n";
             return false;
         }
         if (std::find(proposalFreeVariables.begin(), proposalFreeVariables.end(), rPredicat.varName)
                 != proposalFreeVariables.end())
         {
-            std::cout << "Используется правило вывода с квантором по переменной "
-                    + rPredicat.varName + " входящей свободно в допущение" + proposalStr << "\n";
+            errstr = "Используется правило вывода с квантором по переменной "
+                    + rPredicat.varName + " входящей свободно в допущение" + proposalStr + "\n";
             return false;
         }
         writeProof(eptr, vout);

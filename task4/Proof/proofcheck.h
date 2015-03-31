@@ -6,6 +6,23 @@
 #include <vector>
 #include <map>
 #include "../Parser/Expression.h"
+#include <unordered_map>
+
+struct ExpressionHash
+{
+    size_t operator()(const Expression* e) const
+    {
+        return e->getHash();
+    }
+};
+
+struct ExpressionEquals
+{
+    bool operator()(const Expression* e1, const Expression* e2) const
+    {
+        return e1->isEqual(e2);
+    }
+};
 
 struct PredicatResult
 {
@@ -49,7 +66,7 @@ private:
     std::vector<std::shared_ptr<const Expression> > axioms;
     std::vector<std::shared_ptr<const Expression> > arithm_axioms;
     std::vector<std::shared_ptr<const Expression> > expressions;
-    std::map<size_t, std::vector<size_t> > hash_expressions;
+    std::unordered_map<const Expression*, size_t, ExpressionHash, ExpressionEquals> hash_map;
 
     static std::map<std::string, const Expression*> variables;
     friend class Variable;

@@ -12,8 +12,6 @@ public:
 
     Variable(char param);
 
-    std::size_t getHash() const;
-
     virtual bool isSubstitute(const Expression *expr) const;
 
     virtual bool isEqual(const Expression *expr) const;

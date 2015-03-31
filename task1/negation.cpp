@@ -1,10 +1,5 @@
 #include "negation.h"
 
-std::size_t Negation::getHash() const
-{
-    return hash;
-}
-
 std::string Negation::toString() const
 {
     return "!" + expr->toString();

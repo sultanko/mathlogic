@@ -14,6 +14,7 @@ private:
     std::string proposalStr;
     std::vector<std::shared_ptr<const Expression> > assumptions;
     ProofCheck proofCheck;
+    std::string errstr;
 
 public:
     int isAssumption(const Expression *expr);
@@ -52,5 +53,9 @@ public:
     }
 
 
+    std::string &getErrstr()
+    {
+        return errstr;
+    }
 };
 #endif

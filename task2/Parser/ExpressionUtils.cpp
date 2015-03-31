@@ -22,8 +22,6 @@ ExpressionUtils::ExpressionUtils()
     "(A->B)->(A->!B)->!A",
     "!!A->A"
 })
-    , expressions()
-    , hash_expressions()
 {
     for (size_t i = 0; i < axioms_size; i++)
     {
@@ -48,22 +46,23 @@ int ExpressionUtils::isAxiom(Expression const *expr)
 void ExpressionUtils::addExpression(const Expression *expr)
 {
     expressions.push_back(expr);
-    hash_expressions[expr->getHash()] = expressions.size() - 1;
+    hashmap.insert(std::pair<const Expression*, size_t>(expr, expressions.size() - 1));
 }
 
 std::pair<size_t, size_t> ExpressionUtils::getModusPones(const Expression *expr)
 {
-    size_t expr_hash = expr->getHash();
     for (size_t i = 0; i < expressions.size(); i++)
     {
         const Expression* approve = expressions[i];
         if (typeid(*approve) == typeid(Implication))
         {
             const Implication* implication = static_cast<const Implication*>(approve);
-            if (implication->right->getHash() == expr_hash
-                    && hash_expressions.find(implication->left->getHash()) != hash_expressions.end())
+            if (implication->right->getHash() == expr->getHash() && implication->right->isEqual(expr))
             {
-                return std::make_pair(i, hash_expressions[implication->left->getHash()]);
+                auto mit = hashmap.find(implication->left);
+                if (mit != hashmap.end()) {
+                    return std::make_pair(i, mit->second);
+                }
             }
         }
     }

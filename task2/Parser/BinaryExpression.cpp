@@ -7,7 +7,7 @@ std::size_t BinaryExpression::getHash() const
 
 BinaryExpression::BinaryExpression(const Expression *expr1, const Expression *expr2
         , const std::string& str)
-    : left(expr1), right(expr2), Expression(str)
+    : Expression(str), left(expr1), right(expr2)
 {
 }
 
