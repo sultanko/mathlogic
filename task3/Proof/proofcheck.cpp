@@ -42,7 +42,7 @@ int ProofCheck::isAxiom(const Expression *expr)
 void ProofCheck::addExpression(std::shared_ptr<const Expression> expr)
 {
     expressions.emplace_back(expr);
-    hash_expressions[expr->getHash()].push_back( expressions.size() - 1);
+    hashmap.insert(std::pair<const Expression*, size_t>(expr.get(), expressions.size() - 1));
 }
 
 
@@ -53,24 +53,15 @@ void ProofCheck::addExpression(const Expression *expr)
 
 std::pair<size_t, size_t> ProofCheck::getModusPones(const Expression *expr)
 {
-    size_t expr_hash = expr->getHash();
     for (size_t i = 0; i < expressions.size(); i++)
     {
         const Expression* approve = expressions[i].get();
         if (typeid(*approve) == typeid(Implication))
         {
             const Implication* implication = static_cast<const Implication*>(approve);
-            if (implication->right->getHash() == expr_hash && implication->right->isEqual(expr)
-                    && hash_expressions.find(implication->left->getHash()) != hash_expressions.end())
-            {
-                for (auto num : hash_expressions[implication->left->getHash()])
-                {
-                    if (expressions[num]->isEqual(implication->left.get()))
-                    {
-                        return std::make_pair(i, num);
-                    }
-
-                }
+            auto mit = hashmap.find(implication->left.get());
+            if (mit != hashmap.end()) {
+                return std::make_pair(i, mit->second);
             }
         }
     }
@@ -80,7 +71,7 @@ std::pair<size_t, size_t> ProofCheck::getModusPones(const Expression *expr)
 void ProofCheck::clearData()
 {
     expressions.clear();
-    hash_expressions.clear();
+    hashmap.clear();
     variables.clear();
 }
 
@@ -91,16 +82,5 @@ std::shared_ptr<const Expression> &ProofCheck::getExpression(size_t i)
 
 bool ProofCheck::wasExpression(std::shared_ptr<const Expression> expr)
 {
-    if (hash_expressions.find(expr->getHash()) != hash_expressions.end())
-    {
-        auto vec = hash_expressions[expr->getHash()];
-        for (auto num : vec)
-        {
-            if (expr->isEqual(expressions[num].get()))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
+    return (hashmap.find(expr.get()) != hashmap.end());
 }
