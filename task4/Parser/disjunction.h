@@ -1,7 +1,6 @@
 #ifndef DISJUNCTION_H
 #define DISJUNCTION_H
 
-#include <printf.h>
 #include "BinaryExpression.h"
 
 class Disjunction : public BinaryExpression

@@ -1,4 +1,3 @@
-#include <glob.h>
 #include "Expression.h"
 
 size_t Expression::getHash() const

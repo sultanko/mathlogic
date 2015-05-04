@@ -1,13 +1,12 @@
 #include <iostream>
+#include <stdio.h>
 
 #include "Proof/proofgenerate.h"
 #include "Parser/Parser.h"
 
 using namespace std;
 
-#define FILENAME "shd/incorrect11"
-
-char strAxiom[2024];
+#define FILENAME "task4"
 
 int main()
 {
@@ -21,7 +20,7 @@ int main()
     int counter = 0;
     while (getline(cin, statement))
     {
-//        std::cerr << "Main " << statement << "\n";
+//        std::cerr << "Main " << counter << "\n";
         if (!ProofDeduction::getInstance()->writeProof(statement, vout))
         {
             std::cerr << "Smth wrong with " << statement << "\n";

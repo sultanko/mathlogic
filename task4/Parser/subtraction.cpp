@@ -1,4 +1,3 @@
-#include <glob.h>
 #include "subtraction.h"
 
 const std::string *Subtraction::getSimpleProofment(int l1, int r1) const

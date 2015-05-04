@@ -1,4 +1,3 @@
-#include <glob.h>
 #include "equality.h"
 
 size_t Equality::getSimpleProofSize(int l1, int r1) const

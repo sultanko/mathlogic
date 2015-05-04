@@ -1,7 +1,6 @@
 #ifndef CONJUNCTION_H
 #define CONJUNCTION_H
 
-#include <printf.h>
 #include "BinaryExpression.h"
 
 class Conjunction : public BinaryExpression

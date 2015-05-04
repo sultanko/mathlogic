@@ -7,7 +7,6 @@
 #include <typeinfo>
 #include <vector>
 #include <memory>
-#include <glob.h>
 
 namespace ExpressionConsts {
     const long long BASE_HASH = 59;

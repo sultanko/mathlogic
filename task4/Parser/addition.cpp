@@ -1,4 +1,3 @@
-#include <glob.h>
 #include "addition.h"
 std::shared_ptr<const Expression> Addition::substitute(std::map<std::string, std::shared_ptr<Expression const> > &comparasion) const
 {

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define FILENAME "shd/good5"
+#define FILENAME "task1"
 
 int main()
 {

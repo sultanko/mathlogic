@@ -18,16 +18,16 @@ void ProofDeduction::addHeader(std::string str)
         exit(-1);
     }
     size_t breaker_old = breaker;
-    str = ',' + str.substr(0, breaker);
+    str = ';' + str.substr(0, breaker);
     breaker_old++;
-    breaker = str.rfind(',', str.size() - 1);
+    breaker = str.rfind(';', str.size() - 1);
     proposalStr = str.substr(breaker + 1, breaker_old - breaker - 1);
     proposal = std::shared_ptr<const Expression>(Parser::parseString(proposalStr));
     proposalFreeVariables = proposal->getVariables();
     breaker_old = breaker;
     while (breaker != 0)
     {
-        breaker = str.rfind(',', breaker_old - 1);
+        breaker = str.rfind(';', breaker_old - 1);
         assumptions.emplace_back(
                 Parser::parseString(
                         str.substr(breaker + 1, breaker_old - breaker - 1)));
@@ -206,15 +206,15 @@ void ProofDeduction::writeRuleExistProof(std::shared_ptr<Expression const> now, 
     const std::string& A = this->proposalStr;
     ProofDeduction pd1;
     std::vector<std::shared_ptr<const Expression>> vnow;
-    pd1.addHeader(A + "->" + B + "->" + C + ","
-            + B + "," + A + "|-" + C);
+    pd1.addHeader(A + "->" + B + "->" + C + ";"
+            + B + ";" + A + "|-" + C);
     pd1.writeProof(A + "->" + B + "->" + C, vnow);
     pd1.writeProof(A, vnow);
     pd1.writeProof(B + "->" + C, vnow);
     pd1.writeProof(B, vnow);
     pd1.writeProof(C, vnow);
     pd1.clearData();
-    pd1.addHeader(A + "->" + B + "->" + C + ","
+    pd1.addHeader(A + "->" + B + "->" + C + ";"
             + B + "|-" + A + "->" + C);
     for (auto item : vnow)
     {
@@ -224,15 +224,15 @@ void ProofDeduction::writeRuleExistProof(std::shared_ptr<Expression const> now, 
     vnow.clear();
     B = static_cast<const KvantorExist*>(impl->left.get())->toString();
     vout.emplace_back(Parser::parseString(B + "->" + A + "->" + C));
-    pd1.addHeader(B + "->" + A + "->" + C + ","
-            + A + "," + B + "|-" + C);
+    pd1.addHeader(B + "->" + A + "->" + C + ";"
+            + A + ";" + B + "|-" + C);
     pd1.writeProof(B + "->" + A + "->" + C, vnow);
     pd1.writeProof(B, vnow);
     pd1.writeProof(A + "->" + C, vnow);
     pd1.writeProof(A, vnow);
     pd1.writeProof(C, vnow);
     pd1.clearData();
-    pd1.addHeader(B + "->" + A + "->" + C + ","
+    pd1.addHeader(B + "->" + A + "->" + C + ";"
             + A + "|-" + B + "->" + C);
     for (auto item : vnow)
     {
@@ -251,7 +251,7 @@ void ProofDeduction::writeRuleAllProof(std::shared_ptr<Expression const> now, st
     ProofDeduction pd1 = ProofDeduction();
     const std::string A = proposalStr;
     std::string AaB = "(" + A + "&" + B + ")";
-    pd1.addHeader(A + "->" + B + "->" + C + "," +
+    pd1.addHeader(A + "->" + B + "->" + C + ";" +
             AaB + "|-" + C);
     pd1.writeProof(AaB + "->" + A, vout);
     pd1.writeProof(AaB + "->" + B, vout);
@@ -265,8 +265,8 @@ void ProofDeduction::writeRuleAllProof(std::shared_ptr<Expression const> now, st
     vout.emplace_back(new Implication(Parser::parseString(AaB), impl->right));
     std::vector<std::shared_ptr<const Expression>> vnow;
     ProofDeduction pd2 = ProofDeduction();
-    pd2.addHeader(AaB + "->" + C + ","
-            + A + ","
+    pd2.addHeader(AaB + "->" + C + ";"
+            + A + ";"
             + B + "|-"
             + C);
     pd2.writeProof(A + "->" + B + "->" + AaB, vnow);
@@ -277,7 +277,7 @@ void ProofDeduction::writeRuleAllProof(std::shared_ptr<Expression const> now, st
     pd2.writeProof(AaB + "->" + C, vnow);
     pd2.writeProof(C, vnow);
     pd2.clearData();
-    pd2.addHeader(AaB + "->" + C + ","
+    pd2.addHeader(AaB + "->" + C + ";"
             + A + "|-"
             + B + "->" + C);
     for (auto item : vnow)
