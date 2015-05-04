@@ -1,4 +1,3 @@
-#include <dirent.h>
 #include "proofcheck.h"
 #include "../Parser/implication.h"
 #include "../Parser/Parser.h"

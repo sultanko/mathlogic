@@ -1,5 +1,4 @@
 #include <iostream>
-#include <dirent.h>
 #include "implication.h"
 #include "Parser.h"
 

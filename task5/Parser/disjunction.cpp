@@ -1,4 +1,3 @@
-#include <dirent.h>
 #include "disjunction.h"
 
 bool Disjunction::isSubstitute(const Expression *expr) const
