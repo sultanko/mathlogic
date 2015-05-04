@@ -14,8 +14,6 @@ Parser/Expression.cpp Parser/Parser.cpp Parser/BinaryExpression.cpp
 Parser/conjunction.cpp Parser/disjunction.cpp Parser/implication.cpp Parser/negation.cpp
 Parser/unaryexpression.cpp Parser/variable.cpp
 
-Proof/proofcheck.cpp Proof/proofdeduction.cpp Proof/proofgenerate.cpp
-
 Kripke/PairKripke.cpp
 Kripke/World.cpp Kripke/Tree.cpp Kripke/Generator.cpp
 )

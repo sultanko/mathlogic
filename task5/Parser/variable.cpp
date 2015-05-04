@@ -1,5 +1,4 @@
 #include "variable.h"
-#include "../Proof/proofcheck.h"
 #include "negation.h"
 
 
@@ -17,18 +16,18 @@ Variable::Variable(char param)
 
 bool Variable::isSubstitute(const Expression *expr) const
 {
-    ProofCheck * utils = ProofCheck::getInstance();
-    if (utils->variables.find(stringExpr) == utils->variables.end())
-    {
-        utils->variables[stringExpr] = expr->getHash();
-    }
-    else
-    {
-        if (utils->variables[stringExpr] != expr->getHash())
-        {
-            return false;
-        }
-    }
+//    ProofCheck * utils = ProofCheck::getInstance();
+//    if (utils->variables.find(stringExpr) == utils->variables.end())
+//    {
+//        utils->variables[stringExpr] = expr->getHash();
+//    }
+//    else
+//    {
+//        if (utils->variables[stringExpr] != expr->getHash())
+//        {
+//            return false;
+//        }
+//    }
     return true;
 }
 

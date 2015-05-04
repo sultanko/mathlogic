@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "Proof/proofgenerate.h"
 #include "Parser/Parser.h"
 #include "Kripke/Generator.h"
 
