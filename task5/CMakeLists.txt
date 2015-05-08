@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.4)
-project(task4)
+project(task5)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
@@ -15,6 +15,7 @@ Parser/conjunction.cpp Parser/disjunction.cpp Parser/implication.cpp Parser/nega
 Parser/unaryexpression.cpp Parser/variable.cpp
 
 Kripke/PairKripke.cpp
-Kripke/World.cpp Kripke/Tree.cpp Kripke/Generator.cpp
+
+Kripke/World.cpp Kripke/Tree.cpp Kripke/Generator.cpp Kripke/TreeView.cpp
 )
-add_executable(task5 ${SOURCE_FILES} Kripke/TreeView.cpp Kripke/TreeView.h)
+add_executable(task5 ${SOURCE_FILES})

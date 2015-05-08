@@ -38,12 +38,13 @@ int main()
     {
         cerr << statement << "\n";
         cerr << "ALL OK" << "\n";
+        cout << "Формула общезначима" << "\n";
     }
     else
     {
         cerr << statement << "\n";
         cerr << "FIND CONTRMODEL" << "\n";
-        cout << statement << "\n";
+//        cout << statement << "\n";
         generator.getTrees().front()->printTree(cout, result, 0);
 //            cout << *generator.getTrees().front().get() << "\n";
     }
