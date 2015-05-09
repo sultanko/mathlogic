@@ -6,23 +6,15 @@
 #include <exception>
 #include <cmath>
 
-int naturalCompare(long long i1, long long i2)
-{
-    if (i1 < i2) {
-        return -1;
-    } else if (i1 > i2) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
+using namespace std;
+using namespace boost::multiprecision;
 
 CNF::cptr Atom::rst() const
 {
     throw new std::runtime_error("rst atom");
 }
 
-long long Atom::fco() const
+boost::multiprecision::mpz_int Atom::fco() const
 {
     return value;
 }
@@ -34,7 +26,7 @@ bool Atom::finp() const
 
 CNF::cptr Atom::fe() const
 {
-    throw new std::runtime_error("fe atom");
+    return Atom::createAtom(0);
 }
 
 CNF::cptr Form::rst() const
@@ -42,7 +34,7 @@ CNF::cptr Form::rst() const
     return c;
 }
 
-long long Form::fco() const
+boost::multiprecision::mpz_int Form::fco() const
 {
     return b;
 }
@@ -54,7 +46,7 @@ CNF::cptr Form::fe() const
 
 bool Form::finp() const
 {
-    return false;
+    return (fco() == 0);
 }
 
 size_t CNF::length() const
@@ -69,17 +61,10 @@ size_t CNF::size() const
 
 int CNF::compare(const CNF::cptr& oth) const
 {
-//    std::cerr << "Compare " << finp() << " " << fco() << "\n";
-//    std::cerr << "Comp: " << this << "\n";
-    if (this == nullptr) {
-        if (oth == nullptr) {
-            return 0;
-        }
-        return -1;
-    }
     if (finp() && oth->finp())
     {
-        return naturalCompare(fco(), oth->fco());
+//        return naturalCompare(fco(), oth->fco());
+        return fco().compare(oth->fco());
     }
     if (finp())
     {
@@ -93,7 +78,7 @@ int CNF::compare(const CNF::cptr& oth) const
     if (c1 != 0) {
         return c1;
     }
-    int c2 = naturalCompare(fco(), oth->fco());
+    int c2 = fco().compare(oth->fco());
     if (c2 != 0) {
         return c2;
     }
@@ -113,37 +98,37 @@ bool operator==(const CNF::cptr& th, const CNF::cptr& oth)
 CNF::cptr operator+(const CNF::cptr& a, const CNF::cptr& b)
 {
     if (a->finp() && b->finp()) {
-        return CNF::cptr(new Atom(a->natPart() + b->natPart()));
+        return Atom::createAtom(a->fco() + b->fco());
     }
-    if (a < b) {
+    if (a->fe()->compare(b->fe()) == -1) {
         return b;
     }
-    if (a == b) {
-        return CNF::cptr(new Form(a->fe(), a->fco() + b->fco(), b->rst()));
+    if (a->fe()->compare(b->fe()) == 0) {
+        return Form::createForm(a->fe(), a->fco() + b->fco(), b->rst());
     }
-    return CNF::cptr(new Form(a->fe(), a->fco(), a->rst() + b));
+    return Form::createForm(a->fe(), a->fco(), a->rst() + b);
 }
 
 CNF::cptr operator-(const CNF::cptr& a, const CNF::cptr& b)
 {
     if (a->finp() && b->finp()) {
-        if (naturalCompare(a->fco(), b->fco()) <= 0) {
-            return CNF::cptr(new Atom(0));
+        if (a->fco().compare(b->fco()) <= 0) {
+            return Atom::createAtom(0);
         } else {
-            return CNF::cptr(new Atom(a->fco() - b->fco()));
+            return Atom::createAtom(a->fco() - b->fco());
         }
     }
     if (a->fe() < b->fe()) {
-        return CNF::cptr(new Atom(0));
+        return Atom::createAtom(0);
     }
     if (a->fe() > b->fe()) {
         return a;
     }
-    if (naturalCompare(a->fco(), b->fco()) == -1) {
-        return CNF::cptr(new Atom(0));
+    if (a->fco().compare(b->fco()) == -1) {
+        return Atom::createAtom(0);
     }
-    if (naturalCompare(a->fco(), b->fco()) == 1) {
-        return CNF::cptr(new Form(a->fe(), a->fco() - b->fco(), a->rst()));
+    if (a->fco().compare(b->fco()) == 1) {
+        return Form::createForm(a->fe(), a->fco() - b->fco(), a->rst());
     }
     return a->rst() - b->rst();
 }
@@ -151,20 +136,21 @@ CNF::cptr operator-(const CNF::cptr& a, const CNF::cptr& b)
 CNF::cptr operator*(const CNF::cptr& a, const CNF::cptr& b)
 {
     if (a->isZero() || b->isZero()) {
-        return CNF::cptr(new Atom(0));
+        return Atom::createAtom(0);
     }
     if (a->finp() && b->finp()) {
-        return CNF::cptr(new Atom(a->fco() * b->fco()));
+        return Atom::createAtom(a->fco() * b->fco());
     }
     if (b->finp()) {
-        return CNF::cptr(new Form(a->fe(), a->fco() * b->fco(), a->rst()));
+        return Form::createForm(a->fe(), a->fco() * b->fco(), a->rst());
     }
-    return CNF::cptr(new Form(a->fe() + b->fe(), b->fco(), a * b->rst()));
+    return Form::createForm(a->fe() + b->fe(), b->fco(), a * b->rst());
 }
 
 bool CNF::isZero() const
 {
-    return finp() && fco() == 0;
+//    return finp() && fco() == 0;
+    return natPart() == 0 && fco() == 0;
 }
 
 CNF::cptr CNF::exprToCNF(const sptr<const Expression>& expr)
@@ -172,8 +158,7 @@ CNF::cptr CNF::exprToCNF(const sptr<const Expression>& expr)
     const std::string op = expr->getOperator();
     if (op == "+") {
         return (exprToCNF(expr->getLeft()) + exprToCNF(expr->getRight()));
-    } else if (op == "-")
-    {
+    } else if (op == "-") {
         return (exprToCNF(expr->getLeft()) - exprToCNF(expr->getRight()));
     } else if (op == "*") {
         return (exprToCNF(expr->getLeft()) * exprToCNF(expr->getRight()));
@@ -182,18 +167,21 @@ CNF::cptr CNF::exprToCNF(const sptr<const Expression>& expr)
     } else if (op == "w") {
         return (Form::createW());
     } else {
-        return cptr(new Atom(std::stoll(op)));
+        return CNF::cptr(new Atom(op));
+//        try
+//        {
+//            return Atom::createAtom(std::stoll(op));
+//        } catch (std::invalid_argument e) {
+//            std::cerr << expr->getOperator() << "\n";
+//            std::cerr << e.what() << "\n";
+//            throw e;
+//        }
     }
 }
 
-bool Atom::limitp() const
+bool CNF::limitp() const
 {
-    return value == 0;
-}
-
-bool Form::limitp() const
-{
-    return rst()->limitp();
+    return (finp() ? fco() == 0 : rst()->limitp());
 }
 
 CNF::cptr restn(CNF::cptr const &a, size_t n)
@@ -230,7 +218,7 @@ CNF::cptr pmult(CNF::cptr const &a, CNF::cptr const &b, size_t n)
         return Atom::createAtom(0);
     }
     if (a->finp() && b->finp()) {
-        return Atom::createAtom(a->fco() + b->fco());
+        return Atom::createAtom(a->fco() * b->fco());
     }
     if (b->finp()) {
         return Form::createForm(a->fe(), a->fco() * b->fco(), a->rst());
@@ -241,12 +229,20 @@ CNF::cptr pmult(CNF::cptr const &a, CNF::cptr const &b, size_t n)
                             pmult(a, b->rst(), m));
 }
 
-CNF::cptr Atom::createAtom(long long value)
+CNF::cptr Atom::createAtom(const boost::multiprecision::mpz_int& value)
 {
+    static cptr zero(new Atom("0"));
+    static cptr one(new Atom("1"));
+    if (value.is_zero()) {
+        return zero;
+    }
+    if (value == 1) {
+        return one;
+    }
     return std::shared_ptr<CNF const>(new Atom(value));
 }
 
-CNF::cptr Form::createForm(CNF::cptr const &a, long long b, CNF::cptr const &c)
+CNF::cptr Form::createForm(CNF::cptr const &a, const boost::multiprecision::mpz_int& b, CNF::cptr const &c)
 {
     return std::shared_ptr<CNF const>(new Form(a, b, c));
 }
@@ -256,9 +252,13 @@ CNF::cptr fastMul(CNF::cptr const &a, CNF::cptr const &b)
     return pmult(a, b, 0);
 }
 
-CNF::cptr exp1(long long k, const CNF::cptr& a)
+CNF::cptr exp1(const boost::multiprecision::mpz_int& k, const CNF::cptr& a)
 {
-    if (a->fe()->finp() && a->fe()->fco()) {
+    using namespace boost::multiprecision;
+    if (k == 0) {
+        return Atom::createAtom(0);
+    }
+    if (a == Atom::createAtom(1)) {
         return Form::createForm(Atom::createAtom(a->fco()),
                                 expw(k, a->rst()),
                                 Atom::createAtom(0));
@@ -276,21 +276,22 @@ CNF::cptr exp1(long long k, const CNF::cptr& a)
                             Atom::createAtom(0));
 }
 
-long long expw(long long k, CNF::cptr const &a)
+boost::multiprecision::mpz_int expw(const boost::multiprecision::mpz_int& k, CNF::cptr const &a)
 {
-    return std::pow(k, a->fco());
+//    std::cerr << "Expw: " << k << " " << a->fco() << " " << (k^a->fco()) << "\n";
+    return pow(k, a->fco().convert_to<size_t>());
 }
 
 CNF::cptr Form::createW()
 {
-    return CNF::cptr(Form::createForm(
-            CNF::cptr(new Form(CNF::cptr(), 1, CNF::cptr())),
+    return Form::createForm(
+            Form::createForm(Atom::createAtom(0), 1, Atom::createAtom(0)),
             1,
-            CNF::cptr())
+            Atom::createAtom(0)
     );
 }
 
-long long CNF::natPart() const
+boost::multiprecision::mpz_int CNF::natPart() const
 {
     return (finp() ? fco() : rst()->natPart());
 }
@@ -300,23 +301,31 @@ CNF::cptr CNF::limitPart() const
     return (finp() ? Atom::createAtom(0) : Form::createForm(fe(), fco(), rst()->limitPart()));
 }
 
-CNF::cptr exp2(CNF::cptr const &a, long long k)
+CNF::cptr exp2(CNF::cptr const &a, const boost::multiprecision::mpz_int& k)
 {
+    if (k == 0) {
+        return Atom::createAtom(1);
+    }
     return
-            fastMul(Form::createForm(fastMul(a->fe(), Atom::createAtom((long long) k)), 1, Atom::createAtom(0)), a);
+            fastMul(
+                    Form::createForm(fastMul(a->fe(), Atom::createAtom(k - 1)), 1, Atom::createAtom(0)),
+                    a);
 }
 
-CNF::cptr exp3h(CNF::cptr const &a, long long p, long long n, long long k)
+CNF::cptr exp3h(CNF::cptr const &a, const mpz_int& p, size_t n, const mpz_int& k)
 {
     if (k == 1) {
         return fastMul(a, Atom::createAtom(p)) + Atom::createAtom(p);
     }
-    return padd(fastMul(exp2(a, k), Atom::createAtom(p)), exp3h(a, p, n, k-1), (size_t) n);
+    return padd(fastMul(exp2(a, k), Atom::createAtom(p)), exp3h(a, p, n, k-1), n);
 }
 
 
-CNF::cptr exp3(CNF::cptr const &a, long long k)
+CNF::cptr exp3(CNF::cptr const &a, const mpz_int& k)
 {
+    if (k == 0) {
+        return Atom::createAtom(1);
+    }
     if (k == 1) {
         return a;
     }
@@ -334,12 +343,13 @@ CNF::cptr exp4(CNF::cptr const &a, CNF::cptr const &b)
 {
     return fastMul(
             Form::createForm(fastMul(a->fe(), b->limitPart()), 1, Atom::createAtom(0)),
-            exp3(a, b->natPart()));
+            exp3(a, b->natPart())
+    );
 }
 
 CNF::cptr operator^(CNF::cptr const &a, CNF::cptr const &b)
 {
-    if (b->isZero() || (a->finp() && a->fco() == 1)) {
+    if (b->isZero() || (a == Atom::createAtom(1))) {
         return Atom::createAtom(1);
     }
     if (a->isZero()) {
@@ -355,4 +365,29 @@ CNF::cptr operator^(CNF::cptr const &a, CNF::cptr const &b)
         return exp3(a, b->fco());
     }
     return exp4(a, b);
+}
+
+std::ostream& operator<<(std::ostream& os, const CNF::cptr& a)
+{
+    if (a->finp())
+    {
+        return os << a->fco();
+    }
+    if (a->fe()->isZero())
+    {
+        os << a->fco();
+    }
+    else
+    {
+        os << "w" << "^" << "(" << a->fe() << ")";
+        if (a->fco() != 1)
+        {
+            os << "*" << a->fco();
+        }
+        if (!a->rst()->isZero())
+        {
+            os << "+" << a->rst();
+        }
+    }
+    return os;
 }

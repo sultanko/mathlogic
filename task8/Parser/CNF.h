@@ -8,6 +8,7 @@
 #include <memory>
 #include <iostream>
 #include "Expression.h"
+#include <boost/multiprecision/gmp.hpp>
 
 class Atom;
 class Form;
@@ -20,16 +21,16 @@ public:
     typedef sptr<const CNF> cptr;
 public:
     virtual cptr rst() const = 0;
-    virtual long long fco() const = 0;
+    virtual boost::multiprecision::mpz_int fco() const = 0;
     virtual cptr fe() const = 0;
     virtual cptr limitPart() const;
-    virtual long long natPart() const;
+    virtual boost::multiprecision::mpz_int natPart() const;
     virtual bool finp() const = 0;
     size_t length() const;
     size_t size() const;
     int compare(const cptr& oth) const;
     bool isZero() const;
-    virtual bool limitp() const = 0;
+    virtual bool limitp() const;
     friend size_t c1(const cptr& a, const cptr& b);
     friend size_t c2(const cptr& a, const cptr& b, size_t n);
     friend cptr restn(const cptr& a, size_t n);
@@ -37,11 +38,16 @@ public:
     friend cptr pmult(const cptr& a, const cptr& b, size_t n);
     friend cptr fastMul(const cptr& a, const cptr& b);
 
-    friend long long expw(long long k, const cptr& a);
-    friend cptr exp1(long long k, const cptr& a);
-    friend cptr exp2(const cptr& a, long long k);
-    friend cptr exp3h(const cptr& a, long long p, long long n, long long k);
-    friend cptr exp3(const cptr& a, long long k);
+    friend boost::multiprecision::mpz_int expw(
+            const boost::multiprecision::mpz_int& k, const cptr& a);
+    friend cptr exp1(const boost::multiprecision::mpz_int& k, const cptr& a);
+    friend cptr exp2(const cptr& a, const boost::multiprecision::mpz_int& k);
+    friend cptr exp3h(
+            const cptr& a,
+            const boost::multiprecision::mpz_int& p,
+            size_t n,
+            const boost::multiprecision::mpz_int& k);
+    friend cptr exp3(const cptr& a, const boost::multiprecision::mpz_int& k);
     friend cptr exp4(const cptr& a, const cptr& b);
 
     friend bool operator<(const cptr& a, const cptr& b);
@@ -52,45 +58,44 @@ public:
     friend cptr operator^(const cptr& a, const cptr& b);
 
     static cptr exprToCNF(const sptr<const Expression>& expr);
+
+    friend std::ostream& operator<<(std::ostream& os, const cptr& a);
 };
 
 class Atom : public CNF
 {
-    long long value;
+    boost::multiprecision::mpz_int value;
 public:
-    Atom(long long value) : value(value) {}
+    Atom(const std::string& str) : value(str) {}
+    Atom(const boost::multiprecision::mpz_int& val) : value(val) {}
     virtual cptr rst() const override;
 
-    virtual long long fco() const override;
+    virtual boost::multiprecision::mpz_int fco() const override;
 
     virtual cptr fe() const override;
 
     virtual bool finp() const override;
 
-    virtual bool limitp() const override;
-
-    static cptr createAtom(long long value);
+    static cptr createAtom(const boost::multiprecision::mpz_int& value);
 };
 
 class Form : public CNF
 {
     cptr a;
-    long long b;
+    boost::multiprecision::mpz_int b;
     cptr c;
 public:
-    Form(const cptr& a, long long b, const cptr& c) : a(a), b(b), c(c) {}
+    Form(const cptr& a, const boost::multiprecision::mpz_int& b, const cptr& c) : a(a), b(b), c(c) {}
 
     virtual cptr rst() const override;
 
-    virtual long long fco() const override;
+    virtual boost::multiprecision::mpz_int fco() const override;
 
     virtual cptr fe() const override;
 
     virtual bool finp() const override;
 
-    virtual bool limitp() const override;
-
-    static cptr createForm(const cptr& a, long long b, const cptr& c);
+    static cptr createForm(const cptr& a, const boost::multiprecision::mpz_int& b, const cptr& c);
     static cptr createW();
 };
 
