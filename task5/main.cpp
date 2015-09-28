@@ -29,8 +29,8 @@ int main()
     Expression *expression = Parser::parseString(statement);
     Generator generator = Generator();
     generator.generateWorlds(expression);
+//    cerr << "Genearated\n";
     generator.generateTrees();
-//        cerr << "Genearated\n";
 //        cerr << generator.getTrees().size() << "\n";
 
     const map<size_t, bool> result = generator.checkExpression(expression);

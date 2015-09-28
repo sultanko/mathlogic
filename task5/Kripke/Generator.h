@@ -26,7 +26,7 @@ private:
     void generateWorlds(const std::shared_ptr<World> world, int pos);
     void generateTrees(sptr<Tree> tree, size_t pos);
     bool generateSubtrees(const Expression* expr, std::map<size_t, bool>& res,
-                          std::map<size_t, bool>::iterator iter);
+                          const std::vector<size_t>& ids, size_t pos);
 
 public:
     void generateWorlds(const Expression* expr);

@@ -15,9 +15,9 @@ bool Tree::containsKey(const std::string &variable) const
     return world->containsVariable(variable);
 }
 
-sptr<Tree> Tree::addTree(const std::shared_ptr<World> &world)
+sptr<Tree> Tree::addTree(const std::shared_ptr<World> &world, size_t order)
 {
-    trees.emplace_back(new Tree(world));
+    trees.emplace_back(new Tree(world, order));
     return trees.back();
 }
 

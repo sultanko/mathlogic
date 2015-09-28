@@ -15,7 +15,7 @@ class TreeView : public Tree
     std::shared_ptr<Tree> treeLink;
 
 public:
-    TreeView(const std::shared_ptr<Tree>& tree) : Tree(tree->getWorld()), treeLink(tree)
+    TreeView(const std::shared_ptr<Tree>& tree) : Tree(tree->getWorld(), tree->getOrder()), treeLink(tree)
     { }
 
 };

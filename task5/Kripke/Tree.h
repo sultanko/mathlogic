@@ -25,11 +25,12 @@ private:
 
     sptr<World> world;
     std::vector<sptr<Tree>> trees;
+    const size_t order;
     const size_t id;
 
 public:
-    Tree(const std::shared_ptr<World>& world)
-            : world(world), trees(), id(++treeCounter)
+    Tree(const std::shared_ptr<World>& world, size_t order)
+            : world(world), trees(), order(order), id(++treeCounter)
     {}
 
     void addTree(const sptr<Tree>& ptree)
@@ -55,7 +56,7 @@ public:
         return result;
     }
 
-    virtual sptr<Tree> addTree(const sptr<World>& world);
+    virtual sptr<Tree> addTree(const sptr<World>& world, size_t order);
 
     virtual std::vector<sptr<Tree>> const &getTrees() const
     {
@@ -71,6 +72,12 @@ public:
     virtual sptr<Tree> getChild(size_t i)
     {
         return trees.at(i);
+    }
+
+
+    size_t const getOrder() const
+    {
+        return order;
     }
 
     void printTree(std::ostream& os, const std::map<size_t, bool>& used, int shift);

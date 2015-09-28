@@ -18,6 +18,7 @@ class World
 public:
     World() {}
     World(const std::shared_ptr<const World>& pworld);
+
     const std::unordered_set<std::string>& getForced() const
     {
         return forced;
@@ -33,6 +34,8 @@ public:
     bool isSubset(const World& world) const;
 
     bool isLessAndSubset(const World& world) const;
+
+    size_t getSize() const { return forced.size(); }
 
     friend std::ostream& operator<<(std::ostream& os, const World& world);
 
